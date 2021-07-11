@@ -221,31 +221,17 @@ class _NewMessageState extends State<NewMessage> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: SelectableText("""The Three Stages of Growth
-
-1. Babyhood:
-    The main Characteristics of a baby Christian is ignorance i.e. they are always void of knowledge and information. They don't know what to doat every point in time because of their lack of knowledge.
-
-2. Childhood:
-    This is the second stage of every believer. The main characteristics of a childhood Christian is curiosity i.e they are always wanting to know more about something.
-
-3. Manhood:
-    There are three characteristics of manhood;
-1. Deadness to censure or praise.
-2. Ability to recognize God at work
-
-The Three Stages of Growth
-
-1. Babyhood:
-    The main Characteristics of a baby Christian is ignorance i.e. they are always void of knowledge and information. They don't know what to doat every point in time because of their lack of knowledge.
-
-2. Childhood:
-    This is the second stage of every believer. The main characteristics of a childhood Christian is curiosity i.e they are always wanting to know more about something.
-
-3. Manhood:
-    There are three characteristics of manhood;
-1. Deadness to censure or praise.
-2. Ability to recognize God at work"""),
+                  child: Container(
+                    child: TextFormField(
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        errorBorder: InputBorder.none,
+                        disabledBorder: InputBorder.none,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),

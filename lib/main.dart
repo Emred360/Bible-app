@@ -6,6 +6,8 @@ import 'package:testing_run/Bible/select_book.dart';
 import 'package:testing_run/colors.dart';
 import 'package:testing_run/drawer_menu.dart';
 import 'package:testing_run/general_settings.dart';
+import 'package:testing_run/sqlflite_noteKeeping/noteDetail.dart';
+import 'package:testing_run/sqlflite_noteKeeping/notekeeper.dart';
 import 'package:testing_run/user_accounts/create_account.dart';
 import 'package:testing_run/new_note.dart';
 import 'package:testing_run/notes.dart';
@@ -31,12 +33,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Bibnote', color: kprimaryColor,
+      title: 'Bibnote',
+      color: kprimaryColor,
       theme: ThemeData(
         backgroundColor: kprimaryColor,
       ),
-      home: AllNotes(), //use this when done with the UI
+      // home: AllNotes(), //use this when done with the UI
       // home: MyHomePage(),
+      home: NoteeList(),
+      // home: NoteDetail(),
     );
   }
 }
