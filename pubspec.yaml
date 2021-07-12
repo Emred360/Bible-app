@@ -33,7 +33,7 @@ dependencies:
   bible:
   flutter_staggered_grid_view:
   intl: 
-
+  http:
 
 
 dev_dependencies:

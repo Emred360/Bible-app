@@ -15,8 +15,14 @@ import 'package:testing_run/new_message.dart';
 import 'package:testing_run/user_accounts/edit_profile.dart';
 import 'package:testing_run/user_accounts/profile_pager.dart';
 import 'package:testing_run/user_accounts/signin.dart';
+import 'package:bible/bible.dart' as bible;
 
 void main() async {
+  bible.addKeys({'esvapi': 'APITOKEN'});
+  var passage = bible.queryPassage('John 3:16');
+  passage.then((x) => {
+        print(x.passage),
+      });
   // Hive.registerAdapter(
   //   InventoryAdapter(),
   // );             58dde0e6
