@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:testing_run/colors.dart';
+import 'package:testing_run/sqlflite_noteKeeping/new_note.dart';
 import 'package:testing_run/sqlflite_noteKeeping/noteDetail.dart';
 import 'package:testing_run/utils/database_helper.dart';
 import 'package:testing_run/models/sqlflite_noteDB.dart';
 import 'package:sqflite/sqflite.dart';
+
+import '../new_note.dart';
 
 class NoteeList extends StatefulWidget {
   // const NoteeList({ Key? key }) : super(key: key);
@@ -42,12 +45,12 @@ class NoteeListState extends State<NoteeList> {
           debugPrint("FAB Pressed");
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => NoteDetail(
-                note,
-                "appBarTitle",
-              ),
-            ),
+            MaterialPageRoute(builder: (context) => NewNote()
+                //  NoteDetail(
+                //   note,
+                //   "appBarTitle",
+                // ),
+                ),
           );
         },
         child: Icon(
@@ -60,7 +63,7 @@ class NoteeListState extends State<NoteeList> {
 
   ListView getNoteListView() {
     return ListView.builder(
-      itemCount: count,
+      itemCount: noteList.length,
       itemBuilder: (BuildContext context, int position) {
         return Card(
           child: ListTile(
@@ -69,9 +72,7 @@ class NoteeListState extends State<NoteeList> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => NoteDetail(
-                      Note("5", "the message", 2, "Scripture", "Pst Kingsley"),
-                      ""),
+                  builder: (context) => NoteDetail(noteList[position], ""),
                 ),
               );
             },
@@ -155,7 +156,7 @@ class NoteeListState extends State<NoteeList> {
   }
 
   void updateListView() {
-    var databaseHelper;
+    DatabaseHelper databaseHelper = DatabaseHelper();
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
     dbFuture.then((databse) {
       Future<List<Note>> noteListFuture = databaseHelper.getNoteList();

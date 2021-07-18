@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // import 'package:hive/hive.dart';
 import 'package:testing_run/new_note.dart';
+import 'package:testing_run/sqlflite_noteKeeping/new_note.dart';
 
 Widget notes(BuildContext context) {
   return ListView.builder(

@@ -6,6 +6,7 @@ import 'package:testing_run/Bible/select_book.dart';
 import 'package:testing_run/colors.dart';
 import 'package:testing_run/drawer_menu.dart';
 import 'package:testing_run/general_settings.dart';
+import 'package:testing_run/sqlflite_noteKeeping/new_note.dart';
 import 'package:testing_run/sqlflite_noteKeeping/noteDetail.dart';
 import 'package:testing_run/sqlflite_noteKeeping/notekeeper.dart';
 import 'package:testing_run/user_accounts/create_account.dart';
@@ -19,7 +20,7 @@ import 'package:bible/bible.dart' as bible;
 
 void main() async {
   bible.addKeys({'esvapi': 'APITOKEN'});
-  var passage = bible.queryPassage('John 3:16');
+  var passage = bible.queryPassage('John 3:17');
   passage.then((x) => {
         print(x.passage),
       });
