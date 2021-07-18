@@ -16,10 +16,12 @@ class NoteeList extends StatefulWidget {
 
 class NoteeListState extends State<NoteeList> {
   List<Note> noteList;
+
   int count = 0;
 
   @override
   Widget build(BuildContext context) {
+    Note note;
     if (noteList == null) {
       noteList = List<Note>();
       updateListView();
@@ -41,7 +43,10 @@ class NoteeListState extends State<NoteeList> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => NoteDetail(),
+              builder: (context) => NoteDetail(
+                note,
+                "appBarTitle",
+              ),
             ),
           );
         },
@@ -55,7 +60,7 @@ class NoteeListState extends State<NoteeList> {
 
   ListView getNoteListView() {
     return ListView.builder(
-      itemCount: 0,
+      itemCount: count,
       itemBuilder: (BuildContext context, int position) {
         return Card(
           child: ListTile(
@@ -64,7 +69,9 @@ class NoteeListState extends State<NoteeList> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => NoteDetail(),
+                  builder: (context) => NoteDetail(
+                      Note("5", "the message", 2, "Scripture", "Pst Kingsley"),
+                      ""),
                 ),
               );
             },

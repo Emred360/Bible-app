@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:testing_run/Bible/book_library.dart';
-import 'package:testing_run/main.dart';
+// import 'package:testing_run/main.dart';
 import 'package:testing_run/Bible/select_verse.dart';
 import 'package:testing_run/notes.dart';
 

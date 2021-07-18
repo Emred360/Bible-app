@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:testing_run/colors.dart';
-import 'package:avatar_view/avatar_view.dart';
+// import 'package:avatar_view/avatar_view.dart';
 import 'package:testing_run/drawer_menu.dart';
 
 class ReadBible extends StatefulWidget {
@@ -118,7 +118,6 @@ class _ReadBibleState extends State<ReadBible> {
                         } else {
                           _drawerKey.currentState.openDrawer();
                         }
-                        ;
                       },
                       child: Icon(
                         Icons.menu,

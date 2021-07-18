@@ -1,27 +1,22 @@
 class Note {
   int _id;
   String _minister;
-  String _topic;
+  String topics;
   String _scripture;
   String _message;
   String _date;
   int _priority;
 
-  Note(
-    this._date,
-    this._message,
-    this._priority,
-    this._scripture,
-    this._topic, [
-    this._minister,
-  ]);
+  Note(this._date, this._message, this._priority, this._scripture,
+      this._minister,
+      {this.topics = ""});
   Note.withId(
     this._date,
     this._id,
     this._message,
     this._priority,
     this._scripture,
-    this._topic, [
+    this.topics, [
     this._minister,
   ]);
   int get id => _id;
@@ -30,7 +25,7 @@ class Note {
   String get scripture => _scripture;
   String get date => _date;
   String get minister => _minister;
-  String get topic => _topic;
+  String get topic => topics;
 //Setter
   set minister(String newMinister) {
     if (newMinister.length <= 255) {
@@ -73,7 +68,7 @@ class Note {
       map["id"] = _id;
     }
     map["minister"] = _minister;
-    map["topic"] = _topic;
+    map["topic"] = topics;
     map["scripture"] = _scripture;
     map["message"] = _message;
     map["priority"] = _priority;
@@ -84,7 +79,7 @@ class Note {
   Note.fromMapObject(Map<String, dynamic> map) {
     this._id = map["id"];
     this._minister = map["minister"];
-    this._topic = map["topic"];
+    this.topics = map["topic"];
     this._scripture = map["scripture"];
     this._message = map["message"];
     this._priority = map["priority"];

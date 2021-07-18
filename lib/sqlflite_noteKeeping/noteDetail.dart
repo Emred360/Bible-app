@@ -38,7 +38,9 @@ class _NoteDetailState extends State<NoteDetail> {
   _NoteDetailState(Note note, String appBarTitle);
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = Theme.of(context).textTheme.headline6;
+    TextStyle textStyle = TextStyle(
+      fontSize: 15,
+    );
     topicController.text = note.topic;
     dateController.text = note.date;
     return Scaffold(
@@ -89,7 +91,7 @@ class _NoteDetailState extends State<NoteDetail> {
               ),
               child: TextField(
                 controller: guestMinisterController,
-                style: TextStyle(),
+                style: textStyle,
                 onChanged: (value) {
                   setState(() {
                     print("Message Entered");
@@ -112,7 +114,7 @@ class _NoteDetailState extends State<NoteDetail> {
                 top: 15.0,
                 bottom: 15.0,
               ),
-              child: TextField(
+              child: TextFormField(
                 controller: topicController,
                 style: TextStyle(),
                 onChanged: (value) {
@@ -138,6 +140,7 @@ class _NoteDetailState extends State<NoteDetail> {
                 bottom: 15.0,
               ),
               child: TextField(
+                textInputAction: TextInputAction.go,
                 controller: textController,
                 style: TextStyle(),
                 onChanged: (value) {
@@ -162,7 +165,9 @@ class _NoteDetailState extends State<NoteDetail> {
                 top: 15.0,
                 bottom: 15.0,
               ),
-              child: TextField(
+              child: TextFormField(
+                keyboardType: TextInputType.multiline,
+                textInputAction: TextInputAction.go,
                 controller: messageController,
                 style: TextStyle(),
                 onChanged: (value) {
