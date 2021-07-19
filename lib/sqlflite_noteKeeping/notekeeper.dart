@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:testing_run/Bible/select_book.dart';
+import 'package:testing_run/all_messages.dart';
 import 'package:testing_run/colors.dart';
+import 'package:testing_run/components/newMessage_Note.dart';
+import 'package:testing_run/drawer_menu.dart';
 import 'package:testing_run/sqlflite_noteKeeping/new_note.dart';
 import 'package:testing_run/sqlflite_noteKeeping/noteDetail.dart';
+import 'package:testing_run/user_accounts/create_account.dart';
 import 'package:testing_run/utils/database_helper.dart';
 import 'package:testing_run/models/sqlflite_noteDB.dart';
 import 'package:sqflite/sqflite.dart';
-
-import '../new_note.dart';
 
 class NoteeList extends StatefulWidget {
   // const NoteeList({ Key? key }) : super(key: key);
@@ -24,39 +28,164 @@ class NoteeListState extends State<NoteeList> {
 
   @override
   Widget build(BuildContext context) {
+    GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+    int currentIndex = 0;
     Note note;
     if (noteList == null) {
       noteList = List<Note>();
       updateListView();
     }
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text(
-          "Notes",
-        ),
-        backgroundColor: kprimaryColor,
-      ),
-      body: getNoteListView(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: kprimaryColor,
+        tooltip: "Add Note",
+        backgroundColor: Colors.white,
+        elevation: 10,
         onPressed: () {
-          debugPrint("FAB Pressed");
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => NewNote()
-                //  NoteDetail(
-                //   note,
-                //   "appBarTitle",
-                // ),
-                ),
+            MaterialPageRoute(
+              builder: (context) =>
+                  NewMessageNote(), //or => if (tab.index = "MESSAGE"){goto Navigator.push(NewMessage)}else{goto Navigator.push(NewNote)}
+            ),
           );
         },
         child: Icon(
           Icons.add,
+          color: kprimaryColor,
         ),
-        tooltip: "Add Note",
+      ),
+      bottomNavigationBar: BottomAppBar(
+        notchMargin: 5,
+        shape: CircularNotchedRectangle(),
+        color: kprimaryColor,
+        child: Container(
+          height: 50,
+          color: Colors.transparent,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              // SvgPicture.asset(
+              //   "assets/svg/menu.svg",
+              //   color: Colors.white,
+              // ),
+              GestureDetector(
+                onTap: () {
+                  if (_drawerKey.currentState.isDrawerOpen) {
+                    Navigator.pop(context);
+                  } else {
+                    _drawerKey.currentState.openDrawer();
+                  }
+                },
+                child: Icon(
+                  Icons.menu,
+                  color: Colors.white,
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SignUpPage1()));
+                },
+                child: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                ),
+              ),
+              GestureDetector(
+                onTap: () {},
+                child: Icon(
+                  Icons.share_rounded,
+                  color: Colors.white,
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SelectBooks(),
+                    ),
+                  );
+                },
+                child: Icon(
+                  Icons.chrome_reader_mode,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      key: _drawerKey,
+      drawer: DrawerMenu(),
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        backgroundColor: kprimaryColor,
+        title: RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: "Bib",
+                style: GoogleFonts.poppins(
+                  fontSize: 22,
+                  color: Colors.red,
+                ),
+              ),
+              TextSpan(
+                text: "note",
+                style: GoogleFonts.poppins(
+                  fontSize: 22,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      body: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            DefaultTabController(
+              length: 2,
+              initialIndex: 0,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  TabBar(
+                    labelColor: kprimaryColor,
+                    indicatorPadding: EdgeInsets.all(6.0),
+                    tabs: [
+                      Tab(text: "MESSAGES"),
+                      Tab(
+                        text: "NOTES",
+                      ),
+                    ],
+                    unselectedLabelColor: Colors.grey,
+                    indicatorColor: Colors.red,
+                  ),
+                  Container(
+                    height: MediaQuery.of(context).size.height * .735,
+                    color: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 0, horizontal: 4.0),
+                      child: TabBarView(
+                        children: [
+                          messages(context),
+                          getNoteListView(), //it should call getNoteListView()
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -68,6 +197,7 @@ class NoteeListState extends State<NoteeList> {
         return Card(
           child: ListTile(
             onTap: () {
+              // OnTap=> Edit Note
               debugPrint("Note Tile Pressed");
               Navigator.push(
                 context,
@@ -82,7 +212,55 @@ class NoteeListState extends State<NoteeList> {
                 color: kprimaryColor,
               ),
               onTap: () {
-                _delete(context, noteList[position]);
+                _delete(
+                  context,
+                  noteList[position],
+                );
+              },
+            ),
+            title: Text(
+              this.noteList[position].minister,
+            ),
+            subtitle: Text(
+              this.noteList[position].date,
+            ),
+            leading: CircleAvatar(
+              backgroundColor:
+                  getPriorityColor(this.noteList[position].priority),
+              child: getPriorityIcon(this.noteList[position].priority),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  ListView getMessageListView() {
+    return ListView.builder(
+      itemCount: noteList.length,
+      itemBuilder: (BuildContext context, int position) {
+        return Card(
+          child: ListTile(
+            onTap: () {
+              // OnTap=> Edit Note
+              debugPrint("Note Tile Pressed");
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NoteDetail(noteList[position], ""),
+                ),
+              );
+            },
+            trailing: GestureDetector(
+              child: Icon(
+                Icons.delete,
+                color: kprimaryColor,
+              ),
+              onTap: () {
+                _delete(
+                  context,
+                  noteList[position],
+                );
               },
             ),
             title: Text(
@@ -118,7 +296,10 @@ class NoteeListState extends State<NoteeList> {
   Icon getPriorityIcon(int priority) {
     switch (priority) {
       case 1:
-        return Icon(Icons.favorite);
+        return Icon(
+          Icons.favorite,
+          color: Colors.red,
+        );
         break;
       case 2:
         return Icon(

@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:testing_run/Bible/select_book.dart';
-import 'package:testing_run/all_notes.dart';
 import 'package:testing_run/all_messages.dart';
+import 'package:testing_run/all_notes.dart';
 import 'package:testing_run/components/newMessage_Note.dart';
 import 'package:testing_run/drawer_menu.dart';
-import 'package:testing_run/main.dart';
-import 'package:testing_run/new_message.dart';
+// import 'package:testing_run/main.dart';
+// import 'package:testing_run/new_message.dart';
+// import 'package:testing_run/sqlflite_noteKeeping/notekeeper.dart';
+// import 'package:testing_run/sqlflite_noteKeeping/notekeeper.dart';
+// import 'package:testing_run/sqlflite_noteKeeping/notekeeper.dart';
 import 'package:testing_run/user_accounts/create_account.dart';
 
 import 'colors.dart';
+import 'sqlflite_noteKeeping/notekeeper.dart';
 
 class AllNotes extends StatefulWidget {
   @override
@@ -180,7 +184,7 @@ class _AllNotesState extends State<AllNotes> {
                       child: TabBarView(
                         children: [
                           messages(context),
-                          notes(context),
+                          notes(context), //it should call getNoteListView()
                         ],
                       ),
                     ),

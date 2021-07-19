@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 // import 'dart:io';
 
 // import 'package:hive/hive.dart';
+import 'package:testing_run/new_note.dart';
+import 'package:testing_run/sqlflite_noteKeeping/new_note.dart';
 
-Widget messages(BuildContext context) {
+Widget notes(BuildContext context) {
   return ListView.builder(
     itemCount: 34,
     itemBuilder: (context, index) {
@@ -15,15 +17,19 @@ Widget messages(BuildContext context) {
         child: Card(
           //<-- Card widget
           child: ListTile(
-            onTap: () {},
-            leading: Icon(Icons.delete),
-            title: Text('Minister Dunsin Oyekan'),
-            trailing: Checkbox(
-              value: false,
-              onChanged: (s) {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NewNote()),
+              );
+            },
+            leading: Icon(
+              Icons.delete,
             ),
+            title: Text('The Beginning of the world'),
+            trailing: Checkbox(value: true, onChanged: (s) {}),
             subtitle: Text(
-              'He Gave Gifts To Men',
+              'In the beginning, God created the and the earth',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),

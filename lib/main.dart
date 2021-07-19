@@ -20,7 +20,7 @@ import 'package:bible/bible.dart' as bible;
 
 void main() async {
   bible.addKeys({'esvapi': 'APITOKEN'});
-  var passage = bible.queryPassage('John 3:17');
+  var passage = bible.queryPassage('John 3:7');
   passage.then((x) => {
         print(x.passage),
       });

@@ -32,7 +32,9 @@ class _NewMessageState extends State<NewMessage> {
         backgroundColor: kprimaryColor,
         autofocus: false,
         tooltip: "Discard changes",
-        onPressed: () {},
+        onPressed: () {
+          Navigator.pop(context);
+        },
         child: Icon(
           Icons.close,
           color: Colors.white,
@@ -63,7 +65,7 @@ class _NewMessageState extends State<NewMessage> {
                 Icons.save,
                 color: Colors.white,
               ),
-              onPressed: () {},
+              onPressed: () {}, //Save Message
             ),
             IconButton(
               icon: Icon(
@@ -336,6 +338,7 @@ class MessageDialogBox extends StatelessWidget {
                   backgroundColor: kprimaryColor,
                   onPressed: () {
                     Navigator.pop(context);
+                    print("Closedddddddddddddddddd");
                   },
                   child: Icon(
                     Icons.close,

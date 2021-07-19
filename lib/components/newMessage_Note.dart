@@ -3,6 +3,7 @@ import 'package:testing_run/colors.dart';
 import 'package:testing_run/new_message.dart';
 import 'package:testing_run/notes.dart';
 import 'package:testing_run/sqlflite_noteKeeping/new_note.dart';
+import 'package:testing_run/sqlflite_noteKeeping/notekeeper.dart';
 
 import '../main.dart';
 import '../new_note.dart';
@@ -27,7 +28,7 @@ class _NewMessageNoteState extends State<NewMessageNote> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => AllNotes(),
+                builder: (context) => NoteeList(),
               ),
             );
           },
