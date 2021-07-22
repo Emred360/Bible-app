@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -6,7 +8,7 @@ import 'package:testing_run/notes.dart';
 import 'package:testing_run/sqlflite_noteKeeping/notekeeper.dart';
 import 'package:testing_run/utils/database_helper.dart';
 
-import '../colors.dart';
+import 'package:testing_run/components/constants.dart';
 
 class NoteDetail extends StatefulWidget {
   final Note note;
@@ -28,27 +30,40 @@ class _NoteDetailState extends State<NoteDetail> {
   ];
   DatabaseHelper helper = DatabaseHelper();
   String appBarTitle;
-  Note note;
-  TextEditingController guestMinisterController = TextEditingController();
-  TextEditingController topicController = TextEditingController();
-  TextEditingController textController = TextEditingController();
-  TextEditingController messageController = TextEditingController();
-  TextEditingController dateController = TextEditingController();
+
+  TextEditingController guestMinisterController;
+  TextEditingController topicController;
+  TextEditingController textController;
+  TextEditingController messageController;
+  TextEditingController dateController;
+  TextStyle textStyle = TextStyle(
+    fontSize: 15,
+  );
 
   _NoteDetailState(Note note, String appBarTitle);
   @override
+  void initState() {
+    super.initState();
+    log("dara -- ${widget.note.toMap()}");
+    guestMinisterController = TextEditingController(text: widget.note.minister);
+    topicController = TextEditingController(text: widget.note.topic);
+    textController = TextEditingController(text: widget.note.scripture);
+    messageController = TextEditingController(text: widget.note.message);
+    dateController = TextEditingController(text: widget.note.date);
+    super.initState();
+    value = getPriorityAsString(1);
+  }
+
+  var value;
+
+  @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = TextStyle(
-      fontSize: 15,
-    );
-    topicController.text = note.topic;
-    dateController.text = note.date;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          "New Note",
+          "Edit Note",
         ),
         backgroundColor: kprimaryColor,
       ),
@@ -73,11 +88,10 @@ class _NoteDetailState extends State<NoteDetail> {
                     );
                   },
                 ).toList(),
-                value: getPriorityAsString(note.priority),
+                value: value,
                 onChanged: (valueSelectedbyUser) {
                   setState(() {
-                    print("priority:$valueSelectedbyUser");
-                    updatePriorityAsInt(valueSelectedbyUser);
+                    value = valueSelectedbyUser;
                   });
                 },
               ),
@@ -253,10 +267,10 @@ class _NoteDetailState extends State<NoteDetail> {
   void updatePriorityAsInt(String value) {
     switch (value) {
       case 'Important':
-        note.priority = 1;
+        widget.note.priority = 1;
         break;
       case 'Not Important':
-        note.priority = 2;
+        widget.note.priority = 2;
         break;
     }
   }
@@ -275,32 +289,32 @@ class _NoteDetailState extends State<NoteDetail> {
   }
 
   void updateMinister() {
-    note.minister = guestMinisterController.text;
+    widget.note.minister = guestMinisterController.text;
   }
 
   void updateTopic() {
-    note.topic = topicController.text;
+    widget.note.topic = topicController.text;
   }
 
   void updateDate() {
-    note.date = dateController.text;
+    widget.note.date = dateController.text;
   }
 
   void updateScripture() {
-    note.scripture = textController.text;
+    widget.note.scripture = textController.text;
   }
 
   void updateMessage() {
-    note.message = messageController.text;
+    widget.note.message = messageController.text;
   }
 
 //SaveDataToDatabase
   void _save() async {
     moveToLastScreen();
-    note.date = DateFormat.yMMMd().format(DateTime.now());
+    widget.note.date = DateFormat.yMMMd().format(DateTime.now());
     int result;
-    if (note.id != null) {
-      result = await helper.updateNote(note);
+    if (widget.note.id != null) {
+      result = await helper.updateNote(widget.note);
       //Case 1: Update Operation
     } else {
       //Case 2:   Operation
@@ -314,11 +328,11 @@ class _NoteDetailState extends State<NoteDetail> {
 
   void _delete() async {
     moveToLastScreen();
-    if (note.id != null) {
+    if (widget.note.id != null) {
       _showAlertDialog('Status:', 'No Note was deleted');
       return;
     }
-    int result = await helper.deleteNote(note.id);
+    int result = await helper.deleteNote(widget.note.id);
     if (result != 0) {
       _showAlertDialog('status:', 'Note Deleted Successfully');
     } else {

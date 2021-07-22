@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'colors.dart';
+import 'package:testing_run/components/constants.dart';
 
 class GeneralSettings extends StatefulWidget {
   @override

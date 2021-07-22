@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:testing_run/Bible/book_library.dart';
 import 'package:testing_run/Bible/select_chapter.dart';
 
-import '../colors.dart';
+import 'package:testing_run/components/constants.dart';
 import 'book_library.dart';
 
 class SelectBooks extends StatefulWidget {

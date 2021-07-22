@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:testing_run/colors.dart';
+import 'package:intl/intl.dart';
+import 'package:testing_run/components/constants.dart';
+import 'package:testing_run/models/sqlflite_noteDB.dart';
+import 'package:testing_run/utils/database_helper.dart';
 
 class NewNote extends StatefulWidget {
   // const NewNote({ Key? key }) : super(key: key);
@@ -12,19 +15,27 @@ class NewNote extends StatefulWidget {
 class _NewNoteState extends State<NewNote> {
   TextEditingController guestMinisterController = TextEditingController();
   TextEditingController topicController = TextEditingController();
-  TextEditingController textController = TextEditingController();
+  TextEditingController scriptureController = TextEditingController();
   TextEditingController messageController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   static var _priorities = [
     "Favorite",
     "Not Favorite",
   ];
+  TextStyle textStyle = TextStyle(
+    fontSize: 15,
+  );
+
+  var value;
+
+  @override
+  initState() {
+    super.initState();
+    value = getPriorityAsString(1);
+  }
+
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = TextStyle(
-      fontSize: 15,
-    );
-
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -43,6 +54,7 @@ class _NewNoteState extends State<NewNote> {
             right: 10.0,
           ),
           child: ListView(
+            scrollDirection: Axis.vertical,
             children: [
               ListTile(
                 title: DropdownButtonHideUnderline(
@@ -65,11 +77,10 @@ class _NewNoteState extends State<NewNote> {
                         );
                       },
                     ).toList(),
-                    value: getPriorityAsString(2),
+                    value: value,
                     onChanged: (valueSelectedbyUser) {
                       setState(() {
-                        print("priority:$valueSelectedbyUser");
-                        // updatePriorityAsInt(valueSelectedbyUser);
+                        value = valueSelectedbyUser;
                       });
                     },
                   ),
@@ -134,7 +145,7 @@ class _NewNoteState extends State<NewNote> {
                 ),
                 child: TextField(
                   textInputAction: TextInputAction.go,
-                  controller: textController,
+                  controller: scriptureController,
                   style: TextStyle(),
                   onChanged: (value) {
                     setState(() {
@@ -153,28 +164,30 @@ class _NewNoteState extends State<NewNote> {
               ),
               //Fourth
 
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 15.0,
-                  bottom: 15.0,
-                ),
-                child: TextFormField(
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
-                  textInputAction: TextInputAction.newline,
-                  controller: messageController,
-                  style: TextStyle(),
-                  onChanged: (value) {
-                    setState(() {
-                      print("Message Entered");
-                      // updateMessage();
-                    });
-                  },
-                  decoration: InputDecoration(
-                    labelStyle: textStyle,
-                    labelText: "Message",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5.0),
+              SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: 15.0,
+                    bottom: 15.0,
+                  ),
+                  child: TextFormField(
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    textInputAction: TextInputAction.newline,
+                    controller: messageController,
+                    style: TextStyle(),
+                    onChanged: (value) {
+                      setState(() {
+                        print("Message Entered");
+                        // updateMessage();
+                      });
+                    },
+                    decoration: InputDecoration(
+                      labelStyle: textStyle,
+                      labelText: "Message",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
                     ),
                   ),
                 ),
@@ -219,7 +232,7 @@ class _NewNoteState extends State<NewNote> {
                 onPressed: () {
                   setState(() {
                     print("Save");
-                    // _save();
+                    _save();
                   });
                 },
               ),
@@ -254,22 +267,28 @@ class _NewNoteState extends State<NewNote> {
   }
 
 //SaveDataToDatabase
-  // void _save() async {
-  //   moveToLastScreen();
-  //   note.date = DateFormat.yMMMd().format(DateTime.now());
-  //   int result;
-  //   if (note.id != null) {
-  //     result = await helper.updateNote(note);
-  //     //Case 1: Update Operation
-  //   } else {
-  //     //Case 2:   Operation
-  //   }
-  //   if (result != 0) {
-  //     _showAlertDialog('status:', 'Note Saved Successfully');
-  //   } else {
-  //     _showAlertDialog('status:', 'Problem Saving Note');
-  //   }
-  // }
+  void _save() async {
+    Note note = Note(
+      2,
+      guestMinisterController.text,
+      topicController.text,
+      scriptureController.text,
+      messageController.text,
+      DateFormat.yMMMd().format(DateTime.now()),
+    );
+    moveToLastScreen();
+    DatabaseHelper helper = DatabaseHelper();
+    int result;
+    if (note != null) {
+      result = await helper.insertNote(note);
+      //Case 1: Update Operation
+    }
+    if (result != 0) {
+      _showAlertDialog('status:', 'Note Saved Successfully $result');
+    } else {
+      _showAlertDialog('status:', 'Problem Saving Note');
+    }
+  }
 
   void _showAlertDialog(String topic, String date) {
     AlertDialog alertDialog = AlertDialog(

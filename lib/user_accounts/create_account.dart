@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:testing_run/main.dart';
 import 'package:testing_run/user_accounts/create_account_2.dart';
 
-import '../colors.dart';
+import 'package:testing_run/components/constants.dart';
 
 class SignUpPage1 extends StatefulWidget {
   @override

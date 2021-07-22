@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:testing_run/user_accounts/login_success.dart';
 
-import '../colors.dart';
+import 'package:testing_run/components/constants.dart';
 import '../main.dart';
 import 'create_account_2.dart';
 

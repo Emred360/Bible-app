@@ -1,10 +1,11 @@
 import 'package:avatar_view/avatar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:testing_run/components/constants.dart';
 import 'package:testing_run/main.dart';
 import 'package:testing_run/user_accounts/profile_pager.dart';
 
-import '../colors.dart';
+// import '../colors.dart';
 
 class EditProfile extends StatefulWidget {
   @override

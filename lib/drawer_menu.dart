@@ -1,6 +1,6 @@
 import 'package:avatar_view/avatar_view.dart';
 import 'package:flutter/material.dart';
-import 'package:testing_run/colors.dart';
+import 'package:testing_run/components/constants.dart'; 
 import 'package:testing_run/user_accounts/edit_profile.dart';
 
 class DrawerMenu extends StatelessWidget {

@@ -74,7 +74,7 @@ class DatabaseHelper {
 //Delete Notes
   Future<int> deleteNote(int id) async {
     var db = await this.database;
-    var result = await db.delete('DELETE FROM $noteTable WHERE $colId = $id');
+    var result = await db.delete(noteTable, where: "$colId = $id");
     return result;
   }
 
@@ -91,8 +91,8 @@ class DatabaseHelper {
   Future<List<Note>> getNoteList() async {
     var noteMapList = await getNoteMapList();
     int count = noteMapList.length;
-    List<Note> noteList = List<Note>();
-    for (int i = 0; 1 < count; i++) {
+    List<Note> noteList = [];
+    for (int i = 0; i < count; i++) {
       noteList.add(Note.fromMapObject(noteMapList[i]));
     }
     return noteList;

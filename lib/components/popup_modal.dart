@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:testing_run/colors.dart';
+import 'package:testing_run/components/constants.dart';
 
 class ShortDialogBox extends StatefulWidget {
   @override

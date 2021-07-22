@@ -4,7 +4,7 @@ import 'package:testing_run/Bible/book_library.dart';
 import 'package:testing_run/Bible/select_verse.dart';
 import 'package:testing_run/notes.dart';
 
-import '../colors.dart';
+import 'package:testing_run/components/constants.dart';
 
 class SelectChapter extends StatefulWidget {
   @override

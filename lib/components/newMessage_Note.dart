@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:testing_run/colors.dart';
+import 'package:testing_run/components/constants.dart';
 import 'package:testing_run/new_message.dart';
 import 'package:testing_run/notes.dart';
+import 'package:testing_run/sqlflite_noteKeeping/new_message.dart';
 import 'package:testing_run/sqlflite_noteKeeping/new_note.dart';
 import 'package:testing_run/sqlflite_noteKeeping/notekeeper.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:testing_run/colors.dart';
+import 'package:testing_run/components/constants.dart';
 import 'package:testing_run/main.dart';
 import 'package:testing_run/user_accounts/create_account_3.dart';
 
