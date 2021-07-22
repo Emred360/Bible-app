@@ -5,6 +5,8 @@ import 'package:testing_run/all_messages.dart';
 import 'package:testing_run/components/constants.dart';
 import 'package:testing_run/components/newMessage_Note.dart';
 import 'package:testing_run/drawer_menu.dart';
+import 'package:testing_run/models/sqlflite_messageDB.dart';
+import 'package:testing_run/sqlflite_noteKeeping/messageDetail.dart';
 import 'package:testing_run/sqlflite_noteKeeping/new_message.dart';
 import 'package:testing_run/sqlflite_noteKeeping/new_note.dart';
 import 'package:testing_run/sqlflite_noteKeeping/noteDetail.dart';
@@ -25,6 +27,7 @@ class NoteeList extends StatefulWidget {
 class NoteeListState extends State<NoteeList>
     with SingleTickerProviderStateMixin {
   List<Note> noteList;
+  List<Message> messaageList;
 
   int count = 0;
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
@@ -66,7 +69,7 @@ class NoteeListState extends State<NoteeList>
                   ? NewMessage()
                   : NewNote(), //or => if (tab.index = "MESSAGE"){goto Navigator.push(NewMessage)}else{goto Navigator.push(NewNote)}
             ),
-          );
+          ).then((value) => getCursors());
         },
         child: Icon(
           Icons.add,
@@ -195,7 +198,7 @@ class NoteeListState extends State<NoteeList>
                       child: TabBarView(
                         controller: _controller,
                         children: [
-                          messages(context),
+                          getMessageListView(),
                           getNoteListView(), //it should call getNoteListView()
                         ],
                       ),
@@ -293,42 +296,74 @@ class NoteeListState extends State<NoteeList>
       itemCount: noteList.length,
       itemBuilder: (BuildContext context, int position) {
         return Card(
-          child: ListTile(
-            onTap: () {
-              // OnTap=> Edit Message
-              debugPrint("Note Tile Pressed");
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => NoteDetail(noteList[position], ""),
-                ),
-              );
-            },
-            trailing: GestureDetector(
-              child: Icon(
-                Icons.delete,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
                 color: kprimaryColor,
+                height: 15,
+                width: 80,
+                padding: EdgeInsets.only(
+                  left: 1.0,
+                  top: 0,
+                ),
+                margin: EdgeInsets.only(
+                  bottom: 0,
+                ),
+                child: Center(
+                  child: Text(
+                    this.noteList[position].date,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
               ),
-              onTap: () {
-                _delete(
-                  context,
-                  noteList[position],
-                );
-              },
-            ),
-            title: Text(
-              this.noteList[position].topic,
-            ),
-            subtitle: Text(
-              this.noteList[position].date,
-            ),
-            leading: IconButton(
-              color: getPriorityColor(this.noteList[position].priority),
-              icon: getPriorityIcon(this.noteList[position].priority),
-              onPressed: () {
-                setState(() {});
-              },
-            ),
+              ListTile(
+                onTap: () {
+                  // OnTap=> Edit Message
+                  debugPrint("Message Tile Pressed");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          MessageDetail(messaageList[position], ""),
+                    ),
+                  );
+                },
+                trailing: GestureDetector(
+                  child: Icon(
+                    Icons.delete,
+                    color: kprimaryColor,
+                  ),
+                  onTap: () {
+                    _delete(
+                      context,
+                      noteList[position],
+                    );
+                  },
+                ),
+                title: Center(
+                  child: Text(
+                    this.noteList[position].topic,
+                  ),
+                ),
+                subtitle: Center(
+                  child: Text(
+                    this.noteList[position].scripture,
+                  ),
+                ),
+                // leading: IconButton(
+                //   color: getPriorityColor(this.noteList[position].priority),
+                //   icon: getPriorityIcon(this.noteList[position].priority),
+                //   onPressed: () {
+                //     setState(() {});
+                //   },
+                // ),
+              ),
+            ],
           ),
         );
       },

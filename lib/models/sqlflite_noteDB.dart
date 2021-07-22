@@ -64,7 +64,7 @@ class Note {
   }
 
   set date(String newDate) {
-    this._message = newDate;
+    this._date = newDate;
   }
 
   //Convert

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:testing_run/Bible/book_library.dart';
@@ -5,6 +7,8 @@ import 'package:testing_run/Bible/select_chapter.dart';
 
 import 'package:testing_run/components/constants.dart';
 import 'book_library.dart';
+import 'package:bible/bible.dart' as Bible;
+import 'package:http/http.dart' as http;
 
 class SelectBooks extends StatefulWidget {
   @override
@@ -12,6 +16,20 @@ class SelectBooks extends StatefulWidget {
 }
 
 class _SelectBooksState extends State<SelectBooks> {
+  @override
+  void initState() {
+    super.initState();
+    this.fetchBook();
+  }
+
+  fetchBook() async {
+    var url = "";
+    var response = await Bible.getKey(url);
+    Bible.addKeys({'esvapi': 'APITOKEN'});
+    var passage = await Bible.queryPassage('John 3:16', key: 'APITOKEN');
+    if (response.contains("other,0")) {}
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

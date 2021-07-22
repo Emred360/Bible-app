@@ -17,11 +17,11 @@ import 'package:testing_run/notes.dart';
 import 'package:testing_run/user_accounts/edit_profile.dart';
 import 'package:testing_run/user_accounts/profile_pager.dart';
 import 'package:testing_run/user_accounts/signin.dart';
-import 'package:bible/bible.dart' as bible;
+import 'package:bible/bible.dart' as Bible;
 
 void main() async {
-  bible.addKeys({'esvapi': 'APITOKEN'});
-  var passage = bible.queryPassage('John 3:7');
+  Bible.addKeys({'esvapi': 'APITOKEN'});
+  var passage = Bible.queryPassage('John 3:7');
   passage.then((x) => {
         print(x.passage),
       });
