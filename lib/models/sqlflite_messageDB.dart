@@ -1,4 +1,4 @@
-class Message {
+class MessageM {
   int _idM;
   int _priorityM;
   String _topicsM;
@@ -6,7 +6,7 @@ class Message {
   String _messageM;
   String _dateM;
 
-  Message(
+  MessageM(
     this._priorityM,
     this._topicsM,
     this._scriptureM,
@@ -43,9 +43,9 @@ class Message {
     }
   }
 
-  set messageM(String newMessage) {
-    if (newMessage.length <= 255) {
-      this._messageM = newMessage;
+  set messageM(String newMessageM) {
+    if (newMessageM.length <= 255) {
+      this._messageM = newMessageM;
     }
   }
 
@@ -61,26 +61,26 @@ class Message {
 
   //Convert
   Map<String, dynamic> toMap() {
-    var map = Map<String, dynamic>();
+    var mapM = Map<String, dynamic>();
     if (idM != null) {
-      map["id"] = _idM;
+      mapM["idM"] = _idM;
     }
 
-    map["topic"] = _topicsM;
-    map["scripture"] = _scriptureM;
-    map["message"] = _messageM;
-    map["priority"] = _priorityM;
-    map["date"] = _dateM;
-    return map;
+    mapM["topicM"] = _topicsM;
+    mapM["scriptureM"] = _scriptureM;
+    mapM["messageM"] = _messageM;
+    mapM["priorityM"] = _priorityM;
+    mapM["dateM"] = _dateM;
+    return mapM;
   }
 
-  Message.fromMapObject(Map<String, dynamic> map) {
-    this._idM = map["id"];
+  MessageM.fromMapObject(Map<String, dynamic> mapM) {
+    this._idM = mapM["idM"];
 
-    this._topicsM = map["topic"];
-    this._scriptureM = map["scripture"];
-    this._messageM = map["message"];
-    this._priorityM = map["priority"];
-    this._dateM = map["date"];
+    this._topicsM = mapM["topicM"];
+    this._scriptureM = mapM["scriptureM"];
+    this._messageM = mapM["messageM"];
+    this._priorityM = mapM["priorityM"];
+    this._dateM = mapM["dateM"];
   }
 }

@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:testing_run/Bible/select_book.dart';
+import 'package:testing_run/all_messages.dart';
 import 'package:testing_run/components/constants.dart';
+import 'package:testing_run/models/sqlflite_messageDB.dart';
 import 'package:testing_run/models/sqlflite_noteDB.dart';
 import 'package:testing_run/utils/database_helper.dart';
+import 'package:testing_run/utils/database_helper_message.dart';
 
 class NewMessage extends StatefulWidget {
   // const NewMessage({ Key? key }) : super(key: key);
@@ -14,10 +17,10 @@ class NewMessage extends StatefulWidget {
 }
 
 class _NewMessageState extends State<NewMessage> {
-  TextEditingController topicController = TextEditingController();
-  TextEditingController scriptureController = TextEditingController();
-  TextEditingController messageController = TextEditingController();
-  TextEditingController dateController = TextEditingController();
+  TextEditingController topicControllerM = TextEditingController();
+  TextEditingController scriptureControllerM = TextEditingController();
+  TextEditingController messageControllerM = TextEditingController();
+  TextEditingController dateControllerM = TextEditingController();
   static var _priorities = [
     "Favorite",
     "Not Favorite",
@@ -87,7 +90,7 @@ class _NewMessageState extends State<NewMessage> {
                 bottom: 15.0,
               ),
               child: TextFormField(
-                controller: topicController,
+                controller: topicControllerM,
                 style: TextStyle(),
                 onChanged: (value) {
                   setState(() {
@@ -113,7 +116,7 @@ class _NewMessageState extends State<NewMessage> {
               ),
               child: TextField(
                 textInputAction: TextInputAction.go,
-                controller: scriptureController,
+                controller: scriptureControllerM,
                 style: TextStyle(),
                 onChanged: (value) {
                   setState(() {
@@ -147,7 +150,7 @@ class _NewMessageState extends State<NewMessage> {
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
                     textInputAction: TextInputAction.newline,
-                    controller: messageController,
+                    controller: messageControllerM,
                     style: TextStyle(),
                     onChanged: (value) {
                       setState(() {
@@ -206,7 +209,7 @@ class _NewMessageState extends State<NewMessage> {
               onPressed: () {
                 setState(() {
                   print("Save");
-                  _save();
+                  _saveM();
                 });
               },
             ),
@@ -226,35 +229,34 @@ class _NewMessageState extends State<NewMessage> {
     );
   } //SaveDataToDatabase
 
-  void _save() async {
-    Note note = Note(
+  void _saveM() async {
+    MessageM messageM = MessageM(
       2,
-      "",
-      topicController.text,
-      scriptureController.text,
-      messageController.text,
+      topicControllerM.text,
+      scriptureControllerM.text,
+      messageControllerM.text,
       DateFormat.yMMMd().format(DateTime.now()),
     );
     moveToLastScreen();
-    DatabaseHelper helper = DatabaseHelper();
-    int result;
-    if (note != null) {
-      result = await helper.insertNote(note);
+    DatabaseHelperM helperM = DatabaseHelperM();
+    int resultM;
+    if (messageM != null) {
+      resultM = await helperM.insertMessageM(messageM);
       //Case 1: Update Operation
     }
-    if (result != 0) {
-      _showAlertDialog('status:', 'Message Saved Successfully $result');
+    if (resultM != 0) {
+      _showAlertDialog('status:', 'Message Saved Successfully $resultM');
     } else {
       _showAlertDialog('status:', 'Problem Saving Message');
     }
   }
 
-  void _showAlertDialog(String topic, String date) {
-    AlertDialog alertDialog = AlertDialog(
-      title: Text(topic),
-      content: Text(date),
+  void _showAlertDialog(String topicM, String dateM) {
+    AlertDialog alertDialogM = AlertDialog(
+      title: Text(topicM),
+      content: Text(dateM),
     );
-    showDialog(context: context, builder: (_) => alertDialog);
+    showDialog(context: context, builder: (_) => alertDialogM);
   }
 
   void moveToLastScreen() {

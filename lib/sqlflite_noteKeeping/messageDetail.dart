@@ -8,7 +8,7 @@ import 'package:testing_run/models/sqlflite_messageDB.dart';
 import 'package:testing_run/models/sqlflite_noteDB.dart';
 import 'package:testing_run/sqlflite_noteKeeping/notekeeper.dart';
 import 'package:testing_run/utils/database_helper.dart';
-import 'package:testing_run/utils/message_database_helper.dart';
+import 'package:testing_run/utils/database_helper_message.dart';
 
 class MessageDetail extends StatefulWidget {
   // const MessageDetail({ Key? key }) : super(key: key);
@@ -17,7 +17,7 @@ class MessageDetail extends StatefulWidget {
     "Not Favorite",
   ];
   String appBarTitleM;
-  Message messaage;
+  MessageM messaage;
   // final Note note;
 
   MessageDetail(this.messaage, this.appBarTitleM);
@@ -31,8 +31,8 @@ class MessageDetail extends StatefulWidget {
 }
 
 class _MessageDetailState extends State<MessageDetail> {
-  DatabaseHelperM helper = DatabaseHelperM();
-  _MessageDetailState(Message messaage, String appBarTitle);
+  DatabaseHelperM helperM = DatabaseHelperM();
+  _MessageDetailState(MessageM messaage, String appBarTitle);
   TextEditingController topicControllerM = TextEditingController();
   TextEditingController textControllerM = TextEditingController();
   TextEditingController messageControllerM = TextEditingController();
@@ -62,7 +62,7 @@ class _MessageDetailState extends State<MessageDetail> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          "Edit Note",
+          "Edit Message",
         ),
         backgroundColor: kprimaryColor,
       ),
@@ -286,7 +286,7 @@ class _MessageDetailState extends State<MessageDetail> {
     widget.messaage.dateM = DateFormat.yMMMd().format(DateTime.now());
     int result;
     if (widget.messaage.idM != null) {
-      result = await helper.updateMessage(widget.messaage);
+      result = await helperM.updateMessageM(widget.messaage);
       //Case 1: Update Operation
     } else {
       //Case 2:   Operation
@@ -301,10 +301,10 @@ class _MessageDetailState extends State<MessageDetail> {
   void _deleteM() async {
     moveToLastScreen();
     if (widget.messaage.idM != null) {
-      _showAlertDialogM('Status:', 'No Note was deleted');
+      _showAlertDialogM('Status:', 'No Message was deleted');
       return;
     }
-    int result = await helper.deleteMessage(widget.messaage.idM);
+    int result = await helperM.deleteMessageM(widget.messaage.idM);
     if (result != 0) {
       _showAlertDialogM('status:', 'Note Deleted Successfully');
     } else {

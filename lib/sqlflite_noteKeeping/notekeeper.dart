@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:testing_run/Bible/select_book.dart';
@@ -14,6 +16,7 @@ import 'package:testing_run/user_accounts/create_account.dart';
 import 'package:testing_run/utils/database_helper.dart';
 import 'package:testing_run/models/sqlflite_noteDB.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:testing_run/utils/database_helper_message.dart';
 
 class NoteeList extends StatefulWidget {
   // const NoteeList({ Key? key }) : super(key: key);
@@ -24,16 +27,17 @@ class NoteeList extends StatefulWidget {
   }
 }
 
-class NoteeListState extends State<NoteeList>
-    with SingleTickerProviderStateMixin {
+class NoteeListState extends State<NoteeList> with TickerProviderStateMixin {
   List<Note> noteList;
-  List<Message> messaageList;
+  List<MessageM> messaageList;
 
   int count = 0;
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   int currentIndex = 0;
   Note note;
+  MessageM messaageM;
   TabController _controller;
+  TabController _controllerM;
   @override
   initState() {
     super.initState();
@@ -50,6 +54,20 @@ class NoteeListState extends State<NoteeList>
 
     _controller.addListener(() {
       setState(() => currentIndex = _controller.index);
+    });
+    //Note
+    _controllerM = TabController(length: 2, vsync: this);
+    if (messaageList == null) {
+      messaageList = [];
+
+      print("Message is here");
+      getMessageListView();
+      // updateListView();
+      getCursorsM();
+    }
+
+    _controllerM.addListener(() {
+      setState(() => currentIndex = _controllerM.index);
     });
   }
 
@@ -291,85 +309,7 @@ class NoteeListState extends State<NoteeList>
     );
   }
 
-  ListView getMessageListView() {
-    return ListView.builder(
-      itemCount: noteList.length,
-      itemBuilder: (BuildContext context, int position) {
-        return Card(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                color: kprimaryColor,
-                height: 15,
-                width: 80,
-                padding: EdgeInsets.only(
-                  left: 1.0,
-                  top: 0,
-                ),
-                margin: EdgeInsets.only(
-                  bottom: 0,
-                ),
-                child: Center(
-                  child: Text(
-                    this.noteList[position].date,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-              ListTile(
-                onTap: () {
-                  // OnTap=> Edit Message
-                  debugPrint("Message Tile Pressed");
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          MessageDetail(messaageList[position], ""),
-                    ),
-                  );
-                },
-                trailing: GestureDetector(
-                  child: Icon(
-                    Icons.delete,
-                    color: kprimaryColor,
-                  ),
-                  onTap: () {
-                    _delete(
-                      context,
-                      noteList[position],
-                    );
-                  },
-                ),
-                title: Center(
-                  child: Text(
-                    this.noteList[position].topic,
-                  ),
-                ),
-                subtitle: Center(
-                  child: Text(
-                    this.noteList[position].scripture,
-                  ),
-                ),
-                // leading: IconButton(
-                //   color: getPriorityColor(this.noteList[position].priority),
-                //   icon: getPriorityIcon(this.noteList[position].priority),
-                //   onPressed: () {
-                //     setState(() {});
-                //   },
-                // ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
+//Message
   Color getPriorityColor(int priority) {
     switch (priority) {
       case 1:
@@ -445,6 +385,164 @@ class NoteeListState extends State<NoteeList>
     await helper.getNoteList().then((value) {
       print("hmmm mmghj  ${value.length}");
       setState(() => noteList = value);
+    });
+  }
+
+  ListView getMessageListView() {
+    return ListView.builder(
+      itemCount: messaageList.length,
+      itemBuilder: (BuildContext context, int positionM) {
+        return Card(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                color: kprimaryColor,
+                height: 15,
+                width: 80,
+                padding: EdgeInsets.only(
+                  left: 1.0,
+                  top: 0,
+                ),
+                margin: EdgeInsets.only(
+                  bottom: 0,
+                ),
+                child: Center(
+                  child: Text(
+                    this.messaageList[positionM].dateM,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+              ListTile(
+                onTap: () {
+                  // OnTap=> Edit Message
+                  debugPrint(
+                    "Message Tile Pressed",
+                  );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          MessageDetail(messaageList[positionM], ""),
+                    ),
+                  );
+                },
+                trailing: GestureDetector(
+                  child: Icon(
+                    Icons.delete,
+                    color: kprimaryColor,
+                  ),
+                  onTap: () {
+                    log("dtta --- ${messaageList[positionM].toMap()}");
+                    _deleteM(
+                      context,
+                      messaageList[positionM],
+                    );
+                  },
+                ),
+                title: Center(
+                  child: Text(
+                    this.messaageList[positionM].topicM,
+                  ),
+                ),
+                subtitle: Center(
+                  child: Text(
+                    this.messaageList[positionM].scriptureM,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Color getPriorityColorM(int priorityM) {
+    switch (priorityM) {
+      case 1:
+        return Colors.red;
+        break;
+      case 2:
+        return kprimaryColor;
+        break;
+      default:
+        return kprimaryColor;
+    }
+  }
+
+  Icon getPriorityIconM(int priorityM) {
+    switch (priorityM) {
+      case 1:
+        return Icon(
+          Icons.favorite,
+          color: Colors.red,
+        );
+        break;
+      case 2:
+        return Icon(
+          Icons.favorite_border_outlined,
+        );
+        break;
+      default:
+        return Icon(Icons.favorite);
+    }
+  }
+
+  void _deleteM(BuildContext context, MessageM messageM) async {
+    DatabaseHelperM databaseHelperM = DatabaseHelperM();
+
+    int hmm = messaageM.idM;
+    log("h,,, - $hmm");
+    int resultM = await databaseHelperM.deleteMessageM(hmm);
+    if (resultM != 0) {
+      _showSnackBarM(context, 'Message Deleted Successfully');
+      updateListViewM();
+    }
+  }
+
+  void _showSnackBarM(BuildContext context, String messageM) {
+    final snackBarM = SnackBar(content: Text(messageM));
+    Scaffold.of(context).showSnackBar(snackBarM);
+  }
+
+  void navigateToMessaageDetil(MessageM messageM, String topicM) async {
+    bool result = await Navigator.push(context, MaterialPageRoute(
+      builder: (context) {
+        return MessageDetail(messageM, topicM);
+      },
+    ));
+    if (result == true) {
+      updateListViewM();
+    }
+  }
+
+  void updateListViewM() {
+    print("logsss");
+    DatabaseHelperM databaseHelperM = DatabaseHelperM();
+    final Future<Database> dbFutureM = databaseHelperM.initializeDatabase();
+    dbFutureM.then((databseM) {
+      Future<List<MessageM>> messageListFuture =
+          databaseHelperM.getMessageList();
+      messageListFuture.then((messageList) {
+        setState(() {
+          this.messaageList = messaageList;
+          this.count = messaageList.length;
+        });
+      });
+    });
+  }
+
+  void getCursorsM() async {
+    DatabaseHelperM helperM = DatabaseHelperM();
+    await helperM.getMessageList().then((value) {
+      print("hmmm mmghj  ${value.length}");
+      setState(() => messaageList = value);
     });
   }
 }
