@@ -2,11 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:testing_run/Bible/book_library.dart';
 // import 'package:testing_run/main.dart';
 import 'package:testing_run/Bible/select_verse.dart';
+import 'package:testing_run/models/passage.dart';
 import 'package:testing_run/notes.dart';
 
 import 'package:testing_run/components/constants.dart';
 
 class SelectChapter extends StatefulWidget {
+  final String book;
+
+  const SelectChapter(
+    this.book, {
+    Key key,
+  }) : super(key: key);
   @override
   _SelectChapterState createState() => _SelectChapterState();
 }
@@ -83,8 +90,17 @@ class _SelectChapterState extends State<SelectChapter> {
                 child: TextButton(
                   onPressed: () {
                     print("Number Pressed");
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SelectVerse()));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SelectVerse(
+                          Passages(widget.book, '${index + 1}'),
+                        ),
+                        settings: RouteSettings(
+                          name: 'SelectVerse'
+                        ),
+                      ),
+                    );
                   },
                   child: Text(
                     selectChapters[index],

@@ -41,11 +41,9 @@ class NoteeListState extends State<NoteeList> with TickerProviderStateMixin {
   @override
   initState() {
     super.initState();
-
     _controller = TabController(length: 2, vsync: this);
     if (noteList == null) {
       noteList = [];
-
       print("Note is here");
       getNoteListView();
       // updateListView();
@@ -87,7 +85,7 @@ class NoteeListState extends State<NoteeList> with TickerProviderStateMixin {
                   ? NewMessage()
                   : NewNote(), //or => if (tab.index = "MESSAGE"){goto Navigator.push(NewMessage)}else{goto Navigator.push(NewNote)}
             ),
-          ).then((value) => getCursors());
+          ).then((value) => currentIndex == 0 ? getCursorsM() : getCursors());
         },
         child: Icon(
           Icons.add,
@@ -441,7 +439,7 @@ class NoteeListState extends State<NoteeList> with TickerProviderStateMixin {
                     log("dtta --- ${messaageList[positionM].toMap()}");
                     _deleteM(
                       context,
-                      messaageList[positionM],
+                      messaageList[positionM].idM,
                     );
                   },
                 ),
@@ -494,15 +492,14 @@ class NoteeListState extends State<NoteeList> with TickerProviderStateMixin {
     }
   }
 
-  void _deleteM(BuildContext context, MessageM messageM) async {
+  void _deleteM(BuildContext context, int id) async {
     DatabaseHelperM databaseHelperM = DatabaseHelperM();
 
-    int hmm = messaageM.idM;
-    log("h,,, - $hmm");
-    int resultM = await databaseHelperM.deleteMessageM(hmm);
+    log("h,,, - $id");
+    int resultM = await databaseHelperM.deleteMessageM(id);
     if (resultM != 0) {
+      getCursorsM();
       _showSnackBarM(context, 'Message Deleted Successfully');
-      updateListViewM();
     }
   }
 
@@ -512,14 +509,27 @@ class NoteeListState extends State<NoteeList> with TickerProviderStateMixin {
   }
 
   void navigateToMessaageDetil(MessageM messageM, String topicM) async {
-    bool result = await Navigator.push(context, MaterialPageRoute(
+    Navigator.push(context, MaterialPageRoute(
       builder: (context) {
         return MessageDetail(messageM, topicM);
       },
-    ));
-    if (result == true) {
-      updateListViewM();
-    }
+    )).then((value) {
+      log("oga ooo");
+      if (value) {
+        _showAlertDialogM('status:', 'Message Updated Successfully');
+      } else {
+        _showAlertDialogM('status:', 'Problem Saving Message');
+      }
+      getCursorsM();
+    });
+  }
+
+  void _showAlertDialogM(String topicM, String dateM) {
+    AlertDialog alertDialog = AlertDialog(
+      title: Text(topicM),
+      content: Text(dateM),
+    );
+    showDialog(context: context, builder: (_) => alertDialog);
   }
 
   void updateListViewM() {
@@ -527,12 +537,13 @@ class NoteeListState extends State<NoteeList> with TickerProviderStateMixin {
     DatabaseHelperM databaseHelperM = DatabaseHelperM();
     final Future<Database> dbFutureM = databaseHelperM.initializeDatabase();
     dbFutureM.then((databseM) {
-      Future<List<MessageM>> messageListFuture =
-          databaseHelperM.getMessageList();
-      messageListFuture.then((messageList) {
+      messaageList = [];
+
+      databaseHelperM.getMessageList().then((messageList) {
+        log("no error? ${messaageList}");
         setState(() {
-          this.messaageList = messaageList;
-          this.count = messaageList.length;
+          messaageList = messaageList;
+          count = messaageList.length;
         });
       });
     });
@@ -541,7 +552,7 @@ class NoteeListState extends State<NoteeList> with TickerProviderStateMixin {
   void getCursorsM() async {
     DatabaseHelperM helperM = DatabaseHelperM();
     await helperM.getMessageList().then((value) {
-      print("hmmm mmghj  ${value.length}");
+      print("hmmm oh alit  ${value.length}");
       setState(() => messaageList = value);
     });
   }

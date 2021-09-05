@@ -8,6 +8,7 @@ import 'package:testing_run/sqlflite_noteKeeping/new_note.dart';
 Widget notes(BuildContext context) {
   return ListView.builder(
     itemCount: 34,
+
     itemBuilder: (context, index) {
       return Padding(
         padding: const EdgeInsets.symmetric(

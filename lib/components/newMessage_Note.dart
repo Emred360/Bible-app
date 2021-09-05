@@ -63,6 +63,9 @@ class _NewMessageNoteState extends State<NewMessageNote> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => NewMessage(),
+                      settings: RouteSettings(
+                        name: "NewMessage",
+                      ),
                     ),
                   );
                 },

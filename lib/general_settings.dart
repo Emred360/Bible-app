@@ -55,6 +55,7 @@ class _GeneralSettingsState extends State<GeneralSettings> {
             title: Text(
               "Bible Versions",
             ),
+            
             horizontalTitleGap: 10.0,
           ),
           ListTile(
