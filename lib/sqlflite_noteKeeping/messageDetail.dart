@@ -282,7 +282,6 @@ class _MessageDetailState extends State<MessageDetail> {
 
 //SaveDataToDatabase
   void _saveM() async {
-    moveToLastScreen();
     widget.messaage.dateM = DateFormat.yMMMd().format(DateTime.now());
     int result;
     if (widget.messaage.idM != null) {
@@ -291,11 +290,9 @@ class _MessageDetailState extends State<MessageDetail> {
     } else {
       //Case 2:   Operation
     }
-    if (result != 0) {
-      _showAlertDialogM('status:', 'Message Updated Successfully');
-    } else {
-      _showAlertDialogM('status:', 'Problem Saving Message');
-    }
+    log('ehat is going on guys?');
+    moveToLastScreen(data: result != 0);
+   
   }
 
   void _deleteM() async {
@@ -320,7 +317,7 @@ class _MessageDetailState extends State<MessageDetail> {
     showDialog(context: context, builder: (_) => alertDialog);
   }
 
-  void moveToLastScreen() {
-    Navigator.pop(context, true);
+  void moveToLastScreen({bool data = true}) {
+    Navigator.pop(context, data);
   }
 }

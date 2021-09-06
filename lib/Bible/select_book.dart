@@ -19,16 +19,8 @@ class _SelectBooksState extends State<SelectBooks> {
   @override
   void initState() {
     super.initState();
-    this.fetchBook();
   }
 
-  fetchBook() async {
-    var url = "";
-    var response = await Bible.getKey(url);
-    Bible.addKeys({'esvapi': 'APITOKEN'});
-    var passage = await Bible.queryPassage('John 3:16', key: 'APITOKEN');
-    if (response.contains("other,0")) {}
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +72,11 @@ class _SelectBooksState extends State<SelectBooks> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SelectChapter(),
+                        builder: (context) =>
+                            SelectChapter(allbooks[index].booksName),
+                        settings: RouteSettings(
+                          name: 'SelectChapter',
+                        ),
                       ),
                     );
                   },

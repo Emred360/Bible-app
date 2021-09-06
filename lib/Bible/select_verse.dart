@@ -2,11 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:testing_run/Bible/book_library.dart';
 import 'package:testing_run/Bible/read_bible.dart';
 import 'package:testing_run/Bible/select_book.dart';
+import 'package:testing_run/models/passage.dart';
 import 'package:testing_run/notes.dart';
 
 import 'package:testing_run/components/constants.dart';
 
 class SelectVerse extends StatefulWidget {
+  final Passages psg;
+
+  const SelectVerse(
+    this.psg, {
+    Key key,
+  }) : super(key: key);
   @override
   _SelectVerseState createState() => _SelectVerseState();
 }
@@ -85,7 +92,18 @@ class _SelectVerseState extends State<SelectVerse> {
                     print("Number Pressed");
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ReadBible()),
+                      MaterialPageRoute(
+                        builder: (context) => ReadBible(
+                          Passages(
+                            widget.psg.book,
+                            widget.psg.chapter,
+                            verses: '${index + 1}',
+                          ),
+                        ),
+                        settings: RouteSettings(
+                          name: 'ReadBible',
+                        ),
+                      ),
                     );
                   },
                   child: Text(

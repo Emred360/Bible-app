@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +10,7 @@ import 'package:testing_run/models/sqlflite_messageDB.dart';
 import 'package:testing_run/models/sqlflite_noteDB.dart';
 import 'package:testing_run/utils/database_helper.dart';
 import 'package:testing_run/utils/database_helper_message.dart';
+import 'package:testing_run/utils/shared_pref.dart';
 
 class NewMessage extends StatefulWidget {
   // const NewMessage({ Key? key }) : super(key: key);
@@ -142,9 +145,18 @@ class _NewMessageState extends State<NewMessage> {
                   bottom: 15.0,
                 ),
                 child: GestureDetector(
-                  onDoubleTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SelectBooks()));
+                  onDoubleTap: () async {
+                    log("widget -- ${widget.toStringShort()}");
+                    await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SelectBooks(),
+                                settings: RouteSettings(
+                                    name: "SelectBooks")))
+                        .then((value) async {
+                      await SharedPref.getHash().then(
+                          (value) => messageControllerM.text += ' $value');
+                    });
                   },
                   child: TextFormField(
                     keyboardType: TextInputType.multiline,
